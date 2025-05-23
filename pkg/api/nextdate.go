@@ -94,6 +94,12 @@ func NextDate(now time.Time, dstart string, repeat string) (string, error) {
 		if err != nil || days <= 0 || days > 400 {
 			return "", errors.New("invalid number of days")
 		}
+
+		if !date.Before(now) {
+			date = date.AddDate(0, 0, days)
+			return date.Format(dateFormat), nil
+		}
+
 		for {
 			date = date.AddDate(0, 0, days)
 			if afterNow(date, now) {
