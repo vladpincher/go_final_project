@@ -17,7 +17,7 @@ const (
 // StartServer запускает веб-сервер
 func StartServer(port string, webDir string) error {
 	// Инициализируем базу данных
-	err := db.Init("scheduler.db")
+	err := db.Init("tasks.db")
 	if err != nil {
 		log.Fatalf("Ошибка инициализации БД: %v", err)
 	}

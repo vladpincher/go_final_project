@@ -94,12 +94,6 @@ func NextDate(now time.Time, dstart string, repeat string) (string, error) {
 		if err != nil || days <= 0 || days > 400 {
 			return "", errors.New("invalid number of days")
 		}
-
-		if !date.Before(now) {
-			date = date.AddDate(0, 0, days)
-			return date.Format(dateFormat), nil
-		}
-
 		for {
 			date = date.AddDate(0, 0, days)
 			if afterNow(date, now) {
@@ -203,10 +197,6 @@ func NextDate(now time.Time, dstart string, repeat string) (string, error) {
 
 // nextDayHandler обрабатывает HTTP-запрос и вычисляет следующую дату по правилам
 func nextDayHandler(w http.ResponseWriter, r *http.Request) {
-	if r.Method != http.MethodGet {
-		http.Error(w, "Метод не поддерживается", http.StatusMethodNotAllowed)
-		return
-	}
 	nowStr := r.FormValue("now")
 	dateStr := r.FormValue("date")
 	repeat := r.FormValue("repeat")
