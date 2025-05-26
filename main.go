@@ -27,11 +27,6 @@ func main() {
 	if err != nil {
 		log.Fatal("Ошибка инициализации базы данных:", err)
 	}
-	defer func() {
-		if err := db.CloseDB(); err != nil {
-			log.Println("Ошибка закрытия базы данных:", err)
-		}
-	}()
 
 	// Запускаем сервер
 	fmt.Printf("Starting server on port %s\n", port)
