@@ -11,6 +11,13 @@ import (
 
 var db *sql.DB
 
+func CloseDB() error {
+	if db != nil {
+		return db.Close()
+	}
+	return nil
+}
+
 const schema = `
 CREATE TABLE IF NOT EXISTS scheduler (
     id INTEGER PRIMARY KEY AUTOINCREMENT,

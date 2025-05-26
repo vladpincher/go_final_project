@@ -9,17 +9,19 @@ type TasksResp struct {
 	Tasks []*db.Task `json:"tasks"`
 }
 
+const tasksLimit = 50
+
 func tasksHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodGet {
-		http.Error(w, "Метод не поддерживается", http.StatusMethodNotAllowed)
+		writeJson(w, http.StatusMethodNotAllowed, map[string]string{"error": "Метод не поддерживается"})
 		return
 	}
 
 	search := r.URL.Query().Get("search")
 
-	tasks, err := db.Tasks(50, search)
+	tasks, err := db.Tasks(tasksLimit, search)
 	if err != nil {
-		writeJson(w, map[string]string{"error": err.Error()})
+		writeJson(w, http.StatusInternalServerError, map[string]string{"error": err.Error()})
 		return
 	}
 
@@ -27,5 +29,5 @@ func tasksHandler(w http.ResponseWriter, r *http.Request) {
 		tasks = []*db.Task{}
 	}
 
-	writeJson(w, TasksResp{Tasks: tasks})
+	writeJson(w, http.StatusOK, TasksResp{Tasks: tasks})
 }

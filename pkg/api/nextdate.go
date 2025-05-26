@@ -203,6 +203,10 @@ func NextDate(now time.Time, dstart string, repeat string) (string, error) {
 
 // nextDayHandler обрабатывает HTTP-запрос и вычисляет следующую дату по правилам
 func nextDayHandler(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodGet {
+		http.Error(w, "Метод не поддерживается", http.StatusMethodNotAllowed)
+		return
+	}
 	nowStr := r.FormValue("now")
 	dateStr := r.FormValue("date")
 	repeat := r.FormValue("repeat")
